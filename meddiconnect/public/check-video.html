@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video File Check</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        video { width: 100%; max-width: 600px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Video File Check</h1>
+    
+    <div class="test">
+        <h3>Test 1: Check if video file exists</h3>
+        <p>File path: /videos/healthcare-background.mp4.mp4</p>
+        <div id="file-check">Checking...</div>
+    </div>
+    
+    <div class="test">
+        <h3>Test 2: Try to load your video</h3>
+        <video id="local-video" controls>
+            <source src="/videos/healthcare-background.mp4.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div id="local-status">Loading...</div>
+    </div>
+    
+    <div class="test">
+        <h3>Test 3: Try fallback video</h3>
+        <video id="fallback-video" controls>
+            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div id="fallback-status">Loading...</div>
+    </div>
+
+    <script>
+        // Test 1: Check if file exists
+        fetch('/videos/healthcare-background.mp4.mp4')
+            .then(response => {
+                const statusDiv = document.getElementById('file-check');
+                if (response.ok) {
+                    statusDiv.innerHTML = '<span style="color: green;">✅ File exists and is accessible</span>';
+                    statusDiv.parentElement.className = 'test success';
+                } else {
+                    statusDiv.innerHTML = '<span style="color: red;">❌ File not found or not accessible</span>';
+                    statusDiv.parentElement.className = 'test error';
+                }
+            })
+            .catch(error => {
+                const statusDiv = document.getElementById('file-check');
+                statusDiv.innerHTML = '<span style="color: red;">❌ Error: ' + error.message + '</span>';
+                statusDiv.parentElement.className = 'test error';
+            });
+
+        // Test 2: Local video events
+        const localVideo = document.getElementById('local-video');
+        const localStatus = document.getElementById('local-status');
+        
+        localVideo.addEventListener('loadstart', () => {
+            localStatus.innerHTML = 'Loading started...';
+        });
+        
+        localVideo.addEventListener('canplay', () => {
+            localStatus.innerHTML = '✅ Video can play! Duration: ' + localVideo.duration + ' seconds';
+            localStatus.parentElement.className = 'test success';
+        });
+        
+        localVideo.addEventListener('error', (e) => {
+            localStatus.innerHTML = '❌ Error loading video: ' + (e.target.error ? e.target.error.message : 'Unknown error');
+            localStatus.parentElement.className = 'test error';
+        });
+
+        // Test 3: Fallback video events
+        const fallbackVideo = document.getElementById('fallback-video');
+        const fallbackStatus = document.getElementById('fallback-status');
+        
+        fallbackVideo.addEventListener('canplay', () => {
+            fallbackStatus.innerHTML = '✅ Fallback video works! Duration: ' + fallbackVideo.duration + ' seconds';
+            fallbackStatus.parentElement.className = 'test success';
+        });
+        
+        fallbackVideo.addEventListener('error', (e) => {
+            fallbackStatus.innerHTML = '❌ Even fallback video failed: ' + (e.target.error ? e.target.error.message : 'Unknown error');
+            fallbackStatus.parentElement.className = 'test error';
+        });
+    </script>
+</body>
+</html>
+

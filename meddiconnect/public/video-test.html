@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        video { width: 100%; max-width: 800px; margin: 20px 0; }
+        .status { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Video Test Page</h1>
+    
+    <div class="status">
+        <h3>Testing Local Video File:</h3>
+        <p>File: /videos/healthcare-background.mp4.mp4</p>
+    </div>
+    
+    <video controls>
+        <source src="/videos/healthcare-background.mp4.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <div class="status">
+        <h3>Testing Fallback Video:</h3>
+        <p>If the above doesn't work, this should:</p>
+    </div>
+    
+    <video controls>
+        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <div class="status">
+        <h3>Instructions:</h3>
+        <p>1. If you can see and play the first video, your file is working correctly.</p>
+        <p>2. If only the second video works, there's an issue with your local file.</p>
+        <p>3. If neither works, there's a browser or network issue.</p>
+    </div>
+</body>
+</html>
+
